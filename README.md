@@ -100,9 +100,9 @@ The validation flow is:
 4. Fill `human_score` with a 1-5 human rating.
 5. Run `npm run validate`.
 
-`eval/validate.ts` prints old-vs-new rubric score distributions, computes Pearson correlation between human scores and the new automated combined scores when labels exist, then prints a short interpretation.
+`eval/validate.ts` prints old-vs-new rubric score distributions, computes Pearson correlation between human scores and the new automated combined scores, then prints a short interpretation.
 
-I could not report a real correlation number because `eval/results.json` and `eval/results-v2.json` currently have `human_score: null` for all 10 rows. Once those labels are filled in, `npm run validate` will compute the correlation against the new combined score.
+The current `eval/results-v2.json` has human labels filled in from 3.5 to 4.75. `npm run validate` reports a Pearson correlation of `0.786` between those human scores and the new combined score.
 
 Even with a completed run, a 10-sample correlation is only a directional smoke test. At scale, I would use more samples, multiple human labelers, inter-rater agreement checks, category-level slices, and calibration against production outcomes such as resolution rate, escalation rate, customer satisfaction, and agent edit distance.
 
@@ -153,18 +153,18 @@ The adversarial test now passes its ordering check: bad replies score clearly be
 
 Full eval v2 from `eval/results-v2.json`:
 
-| Email id | Category | Reference similarity | Rubric average | Hallucinated actions | Combined |
-| --- | --- | ---: | ---: | --- | ---: |
-| bill-005 | billing | 35.1 | 5.00 | no | 74.0 |
-| bill-010 | billing | 34.0 | 5.00 | no | 73.6 |
-| tech-005 | technical_issue | 6.2 | 4.00 | no | 50.5 |
-| tech-010 | technical_issue | 11.4 | 5.00 | no | 64.6 |
-| refund-005 | refund_policy | 7.8 | 4.50 | no | 57.1 |
-| refund-010 | refund_policy | 11.0 | 4.75 | no | 61.4 |
-| gen-005 | general_inquiry | 14.1 | 4.75 | no | 62.6 |
-| gen-010 | general_inquiry | 14.4 | 5.00 | no | 65.8 |
-| comp-005 | complaint | 20.4 | 5.00 | no | 68.2 |
-| comp-010 | complaint | 18.1 | 4.75 | no | 64.2 |
+| Email id | Category | Reference similarity | Rubric average | Hallucinated actions | Combined | Human score |
+| --- | --- | ---: | ---: | --- | ---: | ---: |
+| bill-005 | billing | 35.1 | 5.00 | no | 74.0 | 4.75 |
+| bill-010 | billing | 34.0 | 5.00 | no | 73.6 | 4.25 |
+| tech-005 | technical_issue | 6.2 | 4.00 | no | 50.5 | 3.50 |
+| tech-010 | technical_issue | 11.4 | 5.00 | no | 64.6 | 4.00 |
+| refund-005 | refund_policy | 7.8 | 4.50 | no | 57.1 | 3.75 |
+| refund-010 | refund_policy | 11.0 | 4.75 | no | 61.4 | 4.00 |
+| gen-005 | general_inquiry | 14.1 | 4.75 | no | 62.6 | 4.25 |
+| gen-010 | general_inquiry | 14.4 | 5.00 | no | 65.8 | 3.75 |
+| comp-005 | complaint | 20.4 | 5.00 | no | 68.2 | 4.00 |
+| comp-010 | complaint | 18.1 | 4.75 | no | 64.2 | 4.25 |
 
 Rubric distribution comparison from `npm run validate`:
 
@@ -175,7 +175,7 @@ Rubric distribution comparison from `npm run validate`:
 
 This is an improvement: the standard deviation increased from 0.166 to 0.305 and the minimum score dropped from 4.50 to 4.00. It is not a complete fix; the full eval still skews high. The adversarial test shows the judge can discriminate when quality differences are clear, while the held-out generated replies remain mostly strong or the judge is still somewhat lenient.
 
-Correlation update: before and after correlation are both unavailable right now because no `human_score` labels are filled in. After labeling at least two rows, `npm run validate` will compare human labels against the new combined score.
+Correlation update: after filling the v2 human labels, `npm run validate` reports Pearson correlation `0.786` against the new combined score. That is encouraging but still only directional because the sample has 10 items and one labeler.
 
 With more time, I would calibrate the judge with real human-labeled examples, use a stronger or different model as the judge than the one generating replies to reduce self-preference bias, evaluate pairwise comparisons instead of only absolute scores, and track per-category calibration because support-quality failures vary by category.
 
@@ -231,7 +231,7 @@ This runs the full generation and evaluation pipeline on the 10 held-out test ex
 eval/results-v2.json
 ```
 
-`eval/results-v2.json` includes `human_score: null` for each item. Fill those values manually after reviewing the generated replies.
+`eval/results-v2.json` includes filled `human_score` values from 3.5 to 4.75 for the current run. If you regenerate the eval file, review the new replies and update the labels again before validating.
 
 ## Run Judge Calibration Test
 

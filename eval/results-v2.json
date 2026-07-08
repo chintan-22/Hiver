@@ -35,7 +35,7 @@
       "combinedScore": 74,
       "weighting": "Combined score = 40% local reference similarity + 60% LLM rubric average scaled to 0-100."
     },
-    "human_score": null
+    "human_score": 4.75
   },
   {
     "id": "bill-010",
@@ -73,7 +73,7 @@
       "combinedScore": 73.6,
       "weighting": "Combined score = 40% local reference similarity + 60% LLM rubric average scaled to 0-100."
     },
-    "human_score": null
+    "human_score": 4.25
   },
   {
     "id": "tech-005",
@@ -111,7 +111,7 @@
       "combinedScore": 50.5,
       "weighting": "Combined score = 40% local reference similarity + 60% LLM rubric average scaled to 0-100."
     },
-    "human_score": null
+    "human_score": 3.5
   },
   {
     "id": "tech-010",
@@ -149,7 +149,7 @@
       "combinedScore": 64.6,
       "weighting": "Combined score = 40% local reference similarity + 60% LLM rubric average scaled to 0-100."
     },
-    "human_score": null
+    "human_score": 4
   },
   {
     "id": "refund-005",
@@ -187,7 +187,7 @@
       "combinedScore": 57.1,
       "weighting": "Combined score = 40% local reference similarity + 60% LLM rubric average scaled to 0-100."
     },
-    "human_score": null
+    "human_score": 3.75
   },
   {
     "id": "refund-010",
@@ -225,7 +225,7 @@
       "combinedScore": 61.4,
       "weighting": "Combined score = 40% local reference similarity + 60% LLM rubric average scaled to 0-100."
     },
-    "human_score": null
+    "human_score": 4
   },
   {
     "id": "gen-005",
@@ -263,7 +263,7 @@
       "combinedScore": 62.6,
       "weighting": "Combined score = 40% local reference similarity + 60% LLM rubric average scaled to 0-100."
     },
-    "human_score": null
+    "human_score": 4.25
   },
   {
     "id": "gen-010",
@@ -301,7 +301,7 @@
       "combinedScore": 65.8,
       "weighting": "Combined score = 40% local reference similarity + 60% LLM rubric average scaled to 0-100."
     },
-    "human_score": null
+    "human_score": 3.75
   },
   {
     "id": "comp-005",
@@ -339,7 +339,7 @@
       "combinedScore": 68.2,
       "weighting": "Combined score = 40% local reference similarity + 60% LLM rubric average scaled to 0-100."
     },
-    "human_score": null
+    "human_score": 4
   },
   {
     "id": "comp-010",
@@ -377,6 +377,6 @@
       "combinedScore": 64.2,
       "weighting": "Combined score = 40% local reference similarity + 60% LLM rubric average scaled to 0-100."
     },
-    "human_score": null
+    "human_score": 4.25
   }
 ]
