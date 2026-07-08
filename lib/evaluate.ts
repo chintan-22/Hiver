@@ -1,5 +1,5 @@
-import { cosineSimilarity, embedText } from "./embeddings";
-import { createChatCompletion, parseJson } from "./openai";
+import { createChatCompletion, parseJson } from "./groq";
+import { textSimilarity } from "./similarity";
 import type { EvaluationResult, RubricDimension, RubricScore } from "./types";
 
 const dimensions: RubricDimension[] = [
@@ -14,9 +14,9 @@ export async function evaluateReply(input: {
   generatedReply: string;
   realSentReply?: string;
 }): Promise<EvaluationResult> {
-  const [semanticSimilarityScore, rubric] = await Promise.all([
+  const [referenceSimilarityScore, rubric] = await Promise.all([
     input.realSentReply
-      ? computeSemanticSimilarity(input.generatedReply, input.realSentReply)
+      ? computeReferenceSimilarity(input.generatedReply, input.realSentReply)
       : Promise.resolve(null),
     judgeWithRubric(input.incomingEmail, input.generatedReply)
   ]);
@@ -29,29 +29,24 @@ export async function evaluateReply(input: {
   );
   const rubricAsHundred = rubricAverage * 20;
   const combinedScore =
-    semanticSimilarityScore === null
+    referenceSimilarityScore === null
       ? Number(rubricAsHundred.toFixed(1))
-      : Number((semanticSimilarityScore * 0.4 + rubricAsHundred * 0.6).toFixed(1));
+      : Number((referenceSimilarityScore * 0.4 + rubricAsHundred * 0.6).toFixed(1));
 
   return {
-    semanticSimilarityScore,
+    referenceSimilarityScore,
     rubric,
     rubricAverage,
     combinedScore,
     weighting:
-      semanticSimilarityScore === null
+      referenceSimilarityScore === null
         ? "No ground-truth reply available; combined score equals rubric average scaled to 0-100."
-        : "Combined score = 40% semantic similarity + 60% LLM rubric average scaled to 0-100."
+        : "Combined score = 40% local reference similarity + 60% LLM rubric average scaled to 0-100."
   };
 }
 
-async function computeSemanticSimilarity(generatedReply: string, realSentReply: string) {
-  const [generatedEmbedding, realEmbedding] = await Promise.all([
-    embedText(generatedReply),
-    embedText(realSentReply)
-  ]);
-
-  const similarity = cosineSimilarity(generatedEmbedding, realEmbedding);
+async function computeReferenceSimilarity(generatedReply: string, realSentReply: string) {
+  const similarity = textSimilarity(generatedReply, realSentReply);
   return Number(Math.max(0, Math.min(100, similarity * 100)).toFixed(1));
 }
 
@@ -80,7 +75,7 @@ Return JSON with exactly this shape:
 Use integer scores from 1 to 5. Each justification must be one sentence.`
       }
     ],
-    { json: true, temperature: 0 }
+    { temperature: 0 }
   );
 
   const parsed = parseJson<{ rubric?: Record<RubricDimension, RubricScore> }>(content);

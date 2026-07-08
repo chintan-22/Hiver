@@ -5,17 +5,16 @@ GroundedReply is a small full-stack Next.js app that generates AI-suggested cust
 1. Did retrieval find useful prior examples?
 2. Is the generated reply good, grounded, and close to how a human support team might answer?
 
-The project uses the OpenAI API with `gpt-4o-mini` for generation/judging and `text-embedding-3-small` for retrieval and semantic similarity.
+The project uses the Groq API for generation and judging. Retrieval and reference-reply similarity are computed locally with a small TF-IDF style cosine similarity helper, so no OpenAI key or embedding endpoint is required.
 
 ## What It Does
 
 - Stores a synthetic support dataset in `data/email-dataset.json`.
 - Splits the dataset programmatically into 40 reference examples and 10 held-out test examples.
-- Embeds reference-set incoming emails once and caches them to `data/embeddings.json`.
-- Retrieves the top 3 similar examples for a new incoming email.
+- Retrieves the top 3 similar examples for a new incoming email using local token-based TF-IDF cosine similarity.
 - Builds a few-shot prompt from the retrieved examples and generates one suggested reply.
 - Evaluates generated replies with:
-  - Semantic similarity to the known human reply when a ground-truth reply exists.
+  - Local reference similarity to the known human reply when a ground-truth reply exists.
   - An LLM-judge rubric that works even for live queries without ground truth.
   - A combined score.
 
@@ -50,7 +49,7 @@ The split happens in `lib/dataset.ts`: every fifth item is held out as test data
 
 GroundedReply uses RAG/few-shot prompting instead of fine-tuning:
 
-1. Embed the new incoming email.
+1. Vectorize the new incoming email with a small local TF-IDF style scorer.
 2. Retrieve the top 3 most similar reference-set incoming emails by cosine similarity.
 3. Put those retrieved `(incoming email, sent reply)` examples into the prompt.
 4. Ask the model to write one reply grounded in the new email and the retrieved examples.
@@ -65,18 +64,18 @@ Exact match is the wrong metric for free-text replies. Two excellent replies can
 
 GroundedReply uses two complementary signals:
 
-- **Semantic similarity**: embeds the generated reply and the known `sent_reply`, compares them with cosine similarity, and scales the result to 0-100. This asks, “Did the generated reply land near what a human actually sent?”
+- **Local reference similarity**: compares the generated reply and the known `sent_reply` with token-based TF-IDF cosine similarity, then scales the result to 0-100. This asks, “Did the generated reply use similar substance to what a human actually sent?”
 - **LLM-judge rubric**: scores the reply on its own terms from 1-5 across relevance, tone, groundedness, and completeness. This works for live queries where no ground-truth reply exists.
 
 The combined score is:
 
 ```text
-40% semantic similarity + 60% rubric average scaled to 0-100
+40% local reference similarity + 60% rubric average scaled to 0-100
 ```
 
 The rubric is weighted more heavily because the historical sent reply is not guaranteed to be perfect. A generated reply can be better than the old reply, especially if the old one was terse, incomplete, or awkwardly worded.
 
-For live UI queries without a ground-truth reply, semantic similarity is not available. In that case, the combined score equals the rubric average scaled to 0-100.
+For live UI queries without a ground-truth reply, reference similarity is not available. In that case, the combined score equals the rubric average scaled to 0-100.
 
 ## Rubric
 
@@ -103,7 +102,7 @@ The validation flow is:
 
 `eval/validate.ts` computes Pearson correlation between the human scores and the automated combined scores, then prints a short interpretation.
 
-I could not report a real correlation number in this README because this environment does not have `OPENAI_API_KEY` set, so I could not generate eval results and label the actual model outputs. Once eval results are produced and labeled, this section should be updated with the computed correlation.
+I could not report a real correlation number in this README because this environment does not have a usable `GROQ_API_KEY` set, so I could not generate eval results and label the actual model outputs. Once eval results are produced and labeled, this section should be updated with the computed correlation.
 
 Even with a completed run, a 10-sample correlation is only a directional smoke test. At scale, I would use more samples, multiple human labelers, inter-rater agreement checks, category-level slices, and calibration against production outcomes such as resolution rate, escalation rate, customer satisfaction, and agent edit distance.
 
@@ -114,15 +113,14 @@ npm install
 cp .env.example .env
 ```
 
-Set your OpenAI key:
+Set your Groq key:
 
 ```bash
-OPENAI_API_KEY=replace-with-your-openai-key
-OPENAI_MODEL=gpt-4o-mini
-OPENAI_EMBEDDING_MODEL=text-embedding-3-small
+GROQ_API_KEY=replace-with-your-groq-key
+GROQ_MODEL=llama-3.3-70b-versatile
 ```
 
-`OPENAI_MODEL` and `OPENAI_EMBEDDING_MODEL` are optional because the app defaults to those values.
+`GROQ_MODEL` is optional because the app defaults to `llama-3.3-70b-versatile`.
 
 ## Run the App
 
@@ -174,9 +172,10 @@ This reads `eval/results.json`, requires at least two filled `human_score` value
 
 - `data/email-dataset.json`: synthetic dataset.
 - `lib/dataset.ts`: deterministic reference/test split.
-- `lib/embeddings.ts`: embedding calls, cosine similarity, and `data/embeddings.json` cache.
-- `lib/generate.ts`: retrieval plus few-shot reply generation.
-- `lib/evaluate.ts`: semantic similarity, rubric judging, and combined score.
+- `lib/similarity.ts`: local token-based TF-IDF cosine similarity for retrieval and held-out reply comparison.
+- `lib/groq.ts`: Groq chat-completions calls.
+- `lib/generate.ts`: local retrieval plus few-shot reply generation.
+- `lib/evaluate.ts`: reference similarity, rubric judging, and combined score.
 - `app/api/generate/route.ts`: app API route.
 - `eval/run-eval.ts`: held-out evaluation harness.
 - `eval/validate.ts`: human-label correlation check.
@@ -184,7 +183,7 @@ This reads `eval/results.json`, requires at least two filled `human_score` value
 ## Limitations and Next Steps
 
 - The dataset is synthetic and small.
-- The retrieval cache is a JSON file, not a vector database.
+- Local TF-IDF similarity is weaker than embedding similarity and can miss paraphrases.
 - The LLM judge is prompt-based and not calibrated against a large human-labeled benchmark.
 - Groundedness is checked against the incoming email for evaluation, not a full policy corpus.
 - The UI does not stream tokens or show partial retrieval progress.

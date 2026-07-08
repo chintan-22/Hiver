@@ -1,23 +1,17 @@
 import { splitDataset } from "./dataset";
-import { cosineSimilarity, embedText, loadReferenceEmbeddings } from "./embeddings";
-import { createChatCompletion } from "./openai";
+import { createChatCompletion } from "./groq";
+import { rankBySimilarity } from "./similarity";
 import type { GeneratedReplyResult, RetrievedExample } from "./types";
 
 export async function retrieveExamples(incomingEmail: string, count = 3) {
   const { referenceSet } = splitDataset();
-  const queryEmbedding = await embedText(incomingEmail);
-  const referenceEmbeddings = await loadReferenceEmbeddings();
-  const embeddingById = new Map(
-    referenceEmbeddings.map((item) => [item.id, item.embedding])
-  );
-
-  return referenceSet
-    .map((pair) => ({
-      ...pair,
-      similarity: cosineSimilarity(queryEmbedding, embeddingById.get(pair.id) || [])
-    }))
-    .sort((a, b) => b.similarity - a.similarity)
-    .slice(0, count);
+  return rankBySimilarity(
+    incomingEmail,
+    referenceSet,
+    (pair) => pair.incoming_email
+  )
+    .slice(0, count)
+    .map(({ item, similarity }) => ({ ...item, similarity }));
 }
 
 export async function generateReply(

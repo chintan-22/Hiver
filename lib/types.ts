@@ -28,7 +28,7 @@ export type RubricScore = {
 };
 
 export type EvaluationResult = {
-  semanticSimilarityScore: number | null;
+  referenceSimilarityScore: number | null;
   rubric: Record<RubricDimension, RubricScore>;
   rubricAverage: number;
   combinedScore: number;

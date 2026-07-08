@@ -5,6 +5,5 @@ dist
 .env
 .env*.local
 eval/results.json
-data/embeddings.json
 tsconfig.tsbuildinfo
 npm-debug.log*

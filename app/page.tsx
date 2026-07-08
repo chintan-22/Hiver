@@ -189,7 +189,7 @@ export default function Home() {
             <article className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
               <h2 className="text-xl font-semibold">Evaluation</h2>
               <p className="mt-2 text-sm leading-6 text-slate-600">
-                Semantic similarity is unavailable for live queries because
+                Reference similarity is unavailable for live queries because
                 there is no ground-truth sent reply. The live score uses the
                 rubric scaled to 0-100.
               </p>
@@ -205,7 +205,7 @@ export default function Home() {
                 </div>
                 <div className="rounded-md bg-slate-50 p-3">
                   <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                    Similarity
+                    Reference similarity
                   </p>
                   <p className="mt-1 text-2xl font-semibold">N/A</p>
                 </div>

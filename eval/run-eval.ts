@@ -32,7 +32,7 @@ async function main() {
   const rows = results.map((result) => ({
     id: result.id,
     category: result.category,
-    similarity: result.evaluation.semanticSimilarityScore?.toFixed(1) ?? "n/a",
+    similarity: result.evaluation.referenceSimilarityScore?.toFixed(1) ?? "n/a",
     rubricAverage: result.evaluation.rubricAverage.toFixed(2),
     combined: result.evaluation.combinedScore.toFixed(1)
   }));
