@@ -1,6 +1,14 @@
 export async function createChatCompletion(
   messages: Array<{ role: "system" | "user" | "assistant"; content: string }>,
-  options: { temperature?: number } = {}
+  options: { json?: boolean; temperature?: number } = {}
+) {
+  return createChatCompletionWithRetry(messages, options, 0);
+}
+
+async function createChatCompletionWithRetry(
+  messages: Array<{ role: "system" | "user" | "assistant"; content: string }>,
+  options: { json?: boolean; temperature?: number },
+  attempt: number
 ) {
   const apiKey = getApiKey();
   const chatModel = process.env.GROQ_MODEL || "llama-3.3-70b-versatile";
@@ -13,12 +21,19 @@ export async function createChatCompletion(
     body: JSON.stringify({
       model: chatModel,
       temperature: options.temperature ?? 0.2,
+      response_format: options.json ? { type: "json_object" } : undefined,
       messages
     })
   });
 
   if (!response.ok) {
-    throw new Error(`Groq chat error ${response.status}: ${await response.text()}`);
+    const body = await response.text();
+    if (response.status === 429 && attempt < 3) {
+      await sleep(1000 * (attempt + 1));
+      return createChatCompletionWithRetry(messages, options, attempt + 1);
+    }
+
+    throw new Error(`Groq chat error ${response.status}: ${body}`);
   }
 
   const data = (await response.json()) as {
@@ -31,6 +46,10 @@ export async function createChatCompletion(
   }
 
   return content;
+}
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 export function parseJson<T>(content: string): T {

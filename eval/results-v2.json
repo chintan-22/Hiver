@@ -1,0 +1,382 @@
+[
+  {
+    "id": "bill-005",
+    "category": "billing",
+    "incoming_email": "Please send me a W-9 and all unpaid invoices for Northstar Labs.",
+    "real_sent_reply": "Sure. We can send the W-9 and unpaid invoices for Northstar Labs to an account billing admin. Please confirm the billing email address where you would like us to send them.",
+    "generated_reply": "To provide the W-9 and unpaid invoices for Northstar Labs, could you please confirm the email address associated with the Northstar Labs account and the billing contact's name, so we can ensure we're sending the documents to the correct person?",
+    "retrieved_example_ids": [
+      "comp-002",
+      "bill-002",
+      "bill-001"
+    ],
+    "evaluation": {
+      "referenceSimilarityScore": 35.1,
+      "rubric": {
+        "relevance": {
+          "score": 5,
+          "justification": "The reply directly addresses the customer's request for a W-9 and unpaid invoices, asking for necessary information to fulfill the request."
+        },
+        "tone": {
+          "score": 5,
+          "justification": "The tone is professional and polite, showing a willingness to assist the customer while also ensuring the security and accuracy of the information being sent."
+        },
+        "groundedness": {
+          "score": 5,
+          "justification": "The reply stays within the bounds of the customer's email, not introducing any unsupported factual or policy claims about Northstar Labs or the documents requested."
+        },
+        "completeness": {
+          "score": 5,
+          "justification": "The reply covers the necessary next steps to provide the requested documents, asking for specific details to ensure accurate delivery, although it could implicitly benefit from stating a timeline for the response."
+        }
+      },
+      "rubricAverage": 5,
+      "hallucinatedActions": false,
+      "combinedScore": 74,
+      "weighting": "Combined score = 40% local reference similarity + 60% LLM rubric average scaled to 0-100."
+    },
+    "human_score": null
+  },
+  {
+    "id": "bill-010",
+    "category": "billing",
+    "incoming_email": "My accountant says the receipt for April is missing. I only see March and May in the portal.",
+    "real_sent_reply": "We can help locate the April receipt. Please share the account email or workspace name, and we will check whether the April receipt failed to generate or was sent to a different billing contact.",
+    "generated_reply": "To help locate the missing April receipt, could you please confirm the billing email address associated with your account and the last four digits of the card on file? This will allow us to verify the April transaction and provide the corresponding receipt if it exists.",
+    "retrieved_example_ids": [
+      "bill-001",
+      "gen-002",
+      "comp-007"
+    ],
+    "evaluation": {
+      "referenceSimilarityScore": 34,
+      "rubric": {
+        "relevance": {
+          "score": 5,
+          "justification": "The response directly addresses the customer's issue with the missing April receipt and requests necessary information to assist with the problem."
+        },
+        "tone": {
+          "score": 5,
+          "justification": "The tone is professional and appropriately empathetic, as it politely requests information from the customer to help resolve their issue."
+        },
+        "groundedness": {
+          "score": 5,
+          "justification": "The response stays within the bounds of the customer's email and does not introduce any unsupported factual or policy claims."
+        },
+        "completeness": {
+          "score": 5,
+          "justification": "The response covers the necessary next steps to potentially locate the missing receipt and requests specific details from the customer to facilitate the process."
+        }
+      },
+      "rubricAverage": 5,
+      "hallucinatedActions": false,
+      "combinedScore": 73.6,
+      "weighting": "Combined score = 40% local reference similarity + 60% LLM rubric average scaled to 0-100."
+    },
+    "human_score": null
+  },
+  {
+    "id": "tech-005",
+    "category": "technical_issue",
+    "incoming_email": "We are getting a 403 error when calling the API endpoint to create a customer. It worked last week.",
+    "real_sent_reply": "A 403 usually means the token no longer has permission or the endpoint is being called from an unauthorized workspace. Please rotate the API token, confirm it has customer write access, and send the request ID if the error continues.",
+    "generated_reply": "The 403 error typically indicates an authentication issue. Since the API call was working last week, it's possible that there was a change in credentials or permissions. Can you please share more details about your API setup, such as the authentication method used and any recent changes made to your account or credentials?",
+    "retrieved_example_ids": [
+      "bill-008",
+      "gen-007",
+      "gen-006"
+    ],
+    "evaluation": {
+      "referenceSimilarityScore": 6.2,
+      "rubric": {
+        "relevance": {
+          "score": 4,
+          "justification": "The reply directly addresses the customer's issue with the 403 error, but does not provide a potential solution or troubleshooting step beyond requesting more information."
+        },
+        "tone": {
+          "score": 4,
+          "justification": "The tone is professional and polite, but could be more empathetic by acknowledging the customer's frustration with the sudden change in API behavior."
+        },
+        "groundedness": {
+          "score": 5,
+          "justification": "The reply stays within the bounds of the customer's email and does not introduce any unsupported factual or policy claims about the API or authentication."
+        },
+        "completeness": {
+          "score": 3,
+          "justification": "The reply requests more information about the API setup, but does not provide any immediate next steps or potential solutions for the customer to try and resolve the 403 error."
+        }
+      },
+      "rubricAverage": 4,
+      "hallucinatedActions": false,
+      "combinedScore": 50.5,
+      "weighting": "Combined score = 40% local reference similarity + 60% LLM rubric average scaled to 0-100."
+    },
+    "human_score": null
+  },
+  {
+    "id": "tech-010",
+    "category": "technical_issue",
+    "incoming_email": "Notifications are delayed by 20 or 30 minutes. This started after we added a new inbox.",
+    "real_sent_reply": "Delayed notifications can happen if inbox rules or routing queues are backed up. Please send the new inbox name, an example conversation, and whether the delay affects email, Slack, or in-app notifications.",
+    "generated_reply": "Thanks for reporting the notification delay. To help troubleshoot, could you please share the name of the new inbox added and approximately when this issue started? Additionally, are there any error messages or specific patterns to the delays you've observed?",
+    "retrieved_example_ids": [
+      "refund-006",
+      "refund-004",
+      "tech-002"
+    ],
+    "evaluation": {
+      "referenceSimilarityScore": 11.4,
+      "rubric": {
+        "relevance": {
+          "score": 5,
+          "justification": "The response directly addresses the customer's issue with notification delays and requests relevant information to troubleshoot the problem."
+        },
+        "tone": {
+          "score": 5,
+          "justification": "The tone is professional and empathetic, thanking the customer for reporting the issue and politely requesting additional information to assist with troubleshooting."
+        },
+        "groundedness": {
+          "score": 5,
+          "justification": "The response stays within the bounds of the customer's email, not introducing any unsupported factual or policy claims about the notification delay or the new inbox."
+        },
+        "completeness": {
+          "score": 5,
+          "justification": "The response covers the necessary next steps by asking for specific details about the new inbox and the delay patterns, allowing for further investigation of the issue."
+        }
+      },
+      "rubricAverage": 5,
+      "hallucinatedActions": false,
+      "combinedScore": 64.6,
+      "weighting": "Combined score = 40% local reference similarity + 60% LLM rubric average scaled to 0-100."
+    },
+    "human_score": null
+  },
+  {
+    "id": "refund-005",
+    "category": "refund_policy",
+    "incoming_email": "The product was down for us for half a day. Are we eligible for a refund or credit?",
+    "real_sent_reply": "Service credits are reviewed based on the incident impact and the plan terms. Please send the workspace name, affected timeframe, and examples of failed actions so we can evaluate whether a credit applies.",
+    "generated_reply": "To review your eligibility for a refund or credit, please provide the workspace name and the dates and times the product was unavailable for your team. This information will help us investigate the issue and determine the best course of action.",
+    "retrieved_example_ids": [
+      "refund-004",
+      "gen-008",
+      "comp-002"
+    ],
+    "evaluation": {
+      "referenceSimilarityScore": 7.8,
+      "rubric": {
+        "relevance": {
+          "score": 5,
+          "justification": "The reply directly addresses the customer's question about eligibility for a refund or credit, although it could be improved by providing more context about the refund process."
+        },
+        "tone": {
+          "score": 4,
+          "justification": "The tone is professional and polite, but it could be more empathetic towards the customer's experience of having the product down for half a day."
+        },
+        "groundedness": {
+          "score": 5,
+          "justification": "The reply stays within the bounds of the customer's email and does not introduce any unsupported factual or policy claims, making it a grounded response."
+        },
+        "completeness": {
+          "score": 4,
+          "justification": "The reply covers the necessary next steps by requesting specific information from the customer, but it could be more complete by providing an estimated timeline for the investigation and resolution."
+        }
+      },
+      "rubricAverage": 4.5,
+      "hallucinatedActions": false,
+      "combinedScore": 57.1,
+      "weighting": "Combined score = 40% local reference similarity + 60% LLM rubric average scaled to 0-100."
+    },
+    "human_score": null
+  },
+  {
+    "id": "refund-010",
+    "category": "refund_policy",
+    "incoming_email": "I was charged after downgrading. The lower plan should have started yesterday.",
+    "real_sent_reply": "We can review that billing transition. Please send the workspace name and downgrade confirmation date. If the higher charge was applied after the lower plan should have started, we can correct the invoice or issue an eligible credit.",
+    "generated_reply": "We can help review the charge. Please share the account email, the date you downgraded, and the names of the plans you switched between, so we can look into this further and correct any errors.",
+    "retrieved_example_ids": [
+      "refund-006",
+      "refund-001",
+      "bill-007"
+    ],
+    "evaluation": {
+      "referenceSimilarityScore": 11,
+      "rubric": {
+        "relevance": {
+          "score": 5,
+          "justification": "The reply directly addresses the customer's issue with being charged after downgrading and requests necessary information to investigate the problem."
+        },
+        "tone": {
+          "score": 5,
+          "justification": "The tone is professional and appropriately empathetic, as it offers help and asks for information in a polite manner to resolve the customer's concern."
+        },
+        "groundedness": {
+          "score": 5,
+          "justification": "The reply stays within the bounds of the customer's email and does not introduce any unsupported factual or policy claims regarding their account or the downgrade process."
+        },
+        "completeness": {
+          "score": 4,
+          "justification": "The reply covers the necessary next steps by requesting specific information from the customer, but it could be improved by providing more details on what the customer can expect after providing the requested information."
+        }
+      },
+      "rubricAverage": 4.75,
+      "hallucinatedActions": false,
+      "combinedScore": 61.4,
+      "weighting": "Combined score = 40% local reference similarity + 60% LLM rubric average scaled to 0-100."
+    },
+    "human_score": null
+  },
+  {
+    "id": "gen-005",
+    "category": "general_inquiry",
+    "incoming_email": "Where can I change the company logo that appears in customer emails?",
+    "real_sent_reply": "Admins can update the company logo from branding or email template settings. After saving the new logo, send a test email to confirm it renders correctly for customers.",
+    "generated_reply": "You can change the company logo in your workspace settings. The exact steps depend on your current configuration, so please share your workspace name and I'll provide more specific guidance on where to find the logo upload option.",
+    "retrieved_example_ids": [
+      "gen-006",
+      "refund-007",
+      "bill-004"
+    ],
+    "evaluation": {
+      "referenceSimilarityScore": 14.1,
+      "rubric": {
+        "relevance": {
+          "score": 5,
+          "justification": "The reply directly addresses the customer's question about changing the company logo in customer emails."
+        },
+        "tone": {
+          "score": 5,
+          "justification": "The tone is professional and appropriately empathetic, as it offers to provide more specific guidance based on the customer's configuration."
+        },
+        "groundedness": {
+          "score": 5,
+          "justification": "The reply stays within the bounds of the customer's email and does not make any unsupported factual or policy claims about the workspace settings."
+        },
+        "completeness": {
+          "score": 4,
+          "justification": "The reply covers the main question but could be more complete by providing general steps or a link to documentation for customers who prefer self-service."
+        }
+      },
+      "rubricAverage": 4.75,
+      "hallucinatedActions": false,
+      "combinedScore": 62.6,
+      "weighting": "Combined score = 40% local reference similarity + 60% LLM rubric average scaled to 0-100."
+    },
+    "human_score": null
+  },
+  {
+    "id": "gen-010",
+    "category": "general_inquiry",
+    "incoming_email": "Do you have an audit log that shows who changed inbox settings?",
+    "real_sent_reply": "Audit logs are available on higher-tier plans. Please share your workspace name and plan, and we can confirm whether inbox-setting changes are included for your account.",
+    "generated_reply": "Yes, we have an audit log that tracks changes to workspace and inbox settings. To access it, go to your workspace settings and click on the 'Audit Log' tab. This will show you a record of recent changes, including who made them and when. If you're having trouble finding it or need more information on a specific change, please let me know and I'll be happy to help.",
+    "retrieved_example_ids": [
+      "gen-002",
+      "comp-002",
+      "bill-001"
+    ],
+    "evaluation": {
+      "referenceSimilarityScore": 14.4,
+      "rubric": {
+        "relevance": {
+          "score": 5,
+          "justification": "The reply directly addresses the customer's question about the audit log, providing a clear and relevant answer."
+        },
+        "tone": {
+          "score": 5,
+          "justification": "The tone is professional, polite, and helpful, matching the customer's inquiry with a supportive and courteous response."
+        },
+        "groundedness": {
+          "score": 5,
+          "justification": "The reply stays within the bounds of the customer's question, providing information about the audit log without making any unsupported claims or assumptions."
+        },
+        "completeness": {
+          "score": 5,
+          "justification": "The reply provides a complete answer to the customer's question, including instructions on how to access the audit log and an offer of further assistance if needed."
+        }
+      },
+      "rubricAverage": 5,
+      "hallucinatedActions": false,
+      "combinedScore": 65.8,
+      "weighting": "Combined score = 40% local reference similarity + 60% LLM rubric average scaled to 0-100."
+    },
+    "human_score": null
+  },
+  {
+    "id": "comp-005",
+    "category": "complaint",
+    "incoming_email": "This tool is unusable if notifications are unreliable. We missed two urgent customer emails.",
+    "real_sent_reply": "I’m sorry missed notifications affected urgent customer emails. Please send the workspace name, notification channel, and examples of the missed messages so we can investigate the delay or delivery failure.",
+    "generated_reply": "To better understand the issue with unreliable notifications, could you please provide more details about the notifications that were missed, such as the type of notification and how you typically receive them? This will help us investigate and determine the best course of action to ensure you're receiving urgent customer emails reliably.",
+    "retrieved_example_ids": [
+      "gen-006",
+      "refund-008",
+      "refund-004"
+    ],
+    "evaluation": {
+      "referenceSimilarityScore": 20.4,
+      "rubric": {
+        "relevance": {
+          "score": 5,
+          "justification": "The reply directly addresses the customer's issue with unreliable notifications, which is the main ask of the email."
+        },
+        "tone": {
+          "score": 5,
+          "justification": "The tone is professional and empathetic, as it acknowledges the customer's concern and asks for more information to help resolve the issue."
+        },
+        "groundedness": {
+          "score": 5,
+          "justification": "The reply stays within the information provided in the customer email and does not make any unsupported factual or policy claims."
+        },
+        "completeness": {
+          "score": 5,
+          "justification": "The reply covers the answerable parts of the customer's question and asks for missing details to further investigate the issue."
+        }
+      },
+      "rubricAverage": 5,
+      "hallucinatedActions": false,
+      "combinedScore": 68.2,
+      "weighting": "Combined score = 40% local reference similarity + 60% LLM rubric average scaled to 0-100."
+    },
+    "human_score": null
+  },
+  {
+    "id": "comp-010",
+    "category": "complaint",
+    "incoming_email": "I waited on chat for 40 minutes and then the agent disconnected without answering.",
+    "real_sent_reply": "I’m sorry the chat ended without an answer after such a long wait. Please send the chat timestamp or account email, and we will review the transcript and follow up with the information you needed.",
+    "generated_reply": "Sorry to hear that your chat was disconnected without resolution. Can you please share more details about the issue you were trying to address with the chat agent, and we'll do our best to assist you now?",
+    "retrieved_example_ids": [
+      "refund-006",
+      "bill-001",
+      "bill-002"
+    ],
+    "evaluation": {
+      "referenceSimilarityScore": 18.1,
+      "rubric": {
+        "relevance": {
+          "score": 5,
+          "justification": "The reply directly addresses the customer's issue of being disconnected from the chat without resolution, although it could have acknowledged the long wait time more explicitly."
+        },
+        "tone": {
+          "score": 5,
+          "justification": "The tone is professional and empathetic, but it could be slightly warmer by explicitly apologizing for the inconvenience caused by the disconnection."
+        },
+        "groundedness": {
+          "score": 5,
+          "justification": "The reply stays within the bounds of the customer's email and does not introduce any unsupported factual or policy claims, making it well-grounded in the context provided."
+        },
+        "completeness": {
+          "score": 4,
+          "justification": "The reply covers the immediate need for the customer to share more details about their issue but does not provide explicit next steps or a timeline for resolution, which might leave the customer slightly uncertain."
+        }
+      },
+      "rubricAverage": 4.75,
+      "hallucinatedActions": false,
+      "combinedScore": 64.2,
+      "weighting": "Combined score = 40% local reference similarity + 60% LLM rubric average scaled to 0-100."
+    },
+    "human_score": null
+  }
+]

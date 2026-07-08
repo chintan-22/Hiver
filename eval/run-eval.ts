@@ -37,6 +37,7 @@ async function main() {
     category: result.category,
     similarity: result.evaluation.referenceSimilarityScore?.toFixed(1) ?? "n/a",
     rubricAverage: result.evaluation.rubricAverage.toFixed(2),
+    hallucinatedActions: result.evaluation.hallucinatedActions ? "yes" : "no",
     combined: result.evaluation.combinedScore.toFixed(1)
   }));
   const meanCombined =
@@ -46,10 +47,10 @@ async function main() {
   console.table(rows);
   console.log(`Overall system score: ${meanCombined.toFixed(1)}`);
 
-  const outputPath = path.join(process.cwd(), "eval", "results.json");
+  const outputPath = path.join(process.cwd(), "eval", "results-v2.json");
   await writeFile(outputPath, JSON.stringify(results, null, 2));
   console.log(`Saved full results to ${outputPath}`);
-  console.log("Fill human_score values in eval/results.json, then run npm run validate.");
+  console.log("Fill human_score values in eval/results-v2.json, then run npm run validate.");
 }
 
 main().catch((error) => {

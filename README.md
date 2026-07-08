@@ -95,16 +95,89 @@ Each score includes a one-sentence justification. The average rubric score is co
 The validation flow is:
 
 1. Run `npm run eval`.
-2. Open `eval/results.json`.
+2. Open `eval/results-v2.json`.
 3. Review each generated reply honestly.
 4. Fill `human_score` with a 1-5 human rating.
 5. Run `npm run validate`.
 
-`eval/validate.ts` computes Pearson correlation between the human scores and the automated combined scores, then prints a short interpretation.
+`eval/validate.ts` prints old-vs-new rubric score distributions, computes Pearson correlation between human scores and the new automated combined scores when labels exist, then prints a short interpretation.
 
-I could not report a real correlation number in this README because this environment does not have a usable `GROQ_API_KEY` set, so I could not generate eval results and label the actual model outputs. Once eval results are produced and labeled, this section should be updated with the computed correlation.
+I could not report a real correlation number because `eval/results.json` and `eval/results-v2.json` currently have `human_score: null` for all 10 rows. Once those labels are filled in, `npm run validate` will compute the correlation against the new combined score.
 
 Even with a completed run, a 10-sample correlation is only a directional smoke test. At scale, I would use more samples, multiple human labelers, inter-rater agreement checks, category-level slices, and calibration against production outcomes such as resolution rate, escalation rate, customer satisfaction, and agent edit distance.
+
+## Evaluation Iteration: Fixing Rubric Saturation
+
+The first evaluator showed a clear ceiling effect: the LLM judge scored nearly every generated reply between 4.5 and 5.0. The reference-similarity scores varied, but the rubric was not adding much independent signal.
+
+Original saturated eval table from `eval/results.json`:
+
+| Email id | Category | Reference similarity | Rubric average | Combined |
+| --- | --- | ---: | ---: | ---: |
+| bill-005 | billing | 7.8 | 4.75 | 68.5 |
+| bill-010 | billing | 8.3 | 4.50 | 67.3 |
+| tech-005 | technical_issue | 11.0 | 5.00 | 64.4 |
+| tech-010 | technical_issue | 9.4 | 5.00 | 63.8 |
+| refund-005 | refund_policy | 7.8 | 5.00 | 63.1 |
+| refund-010 | refund_policy | 11.0 | 5.00 | 64.4 |
+| gen-005 | general_inquiry | 3.0 | 4.75 | 61.2 |
+| gen-010 | general_inquiry | 14.3 | 5.00 | 65.7 |
+| comp-005 | complaint | 17.5 | 5.00 | 67.0 |
+| comp-010 | complaint | 18.1 | 5.00 | 67.2 |
+
+Diagnosis: LLM-as-judge scoring without calibration anchors tends to be lenient, especially when the generated reply is fluent and plausible. The original prompt asked for scores in isolation, so the judge had no concrete reference for what “bad”, “mediocre”, and “great” should look like.
+
+Fix implemented:
+
+- Added compact calibration anchors for each rubric dimension: relevance, tone, groundedness, and completeness.
+- Instructed the judge to reserve 5/5 for replies with no identifiable flaw and to use the full 1-5 range.
+- Added `hallucinated_actions`, a boolean flag for replies that claim to have done actions the system cannot know or perform, such as already reviewing screenshots or escalating to a named person.
+- Required specific criticism for every dimension, even when the score is high.
+- Added JSON-mode judge calls and a small retry for transient Groq 429 rate limits.
+
+Adversarial calibration test from `npm run test-judge`:
+
+| Email id | Reply type | Relevance | Tone | Groundedness | Completeness | Average | Hallucinated actions |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | --- |
+| bill-005 | bad | 1 | 1 | 1 | 1 | 1.00 | true |
+| bill-005 | mediocre | 3 | 3 | 5 | 2 | 3.25 | false |
+| bill-005 | good | 5 | 5 | 5 | 4 | 4.75 | false |
+| tech-005 | bad | 1 | 1 | 1 | 1 | 1.00 | false |
+| tech-005 | mediocre | 2 | 3 | 4 | 2 | 2.75 | false |
+| tech-005 | good | 5 | 5 | 5 | 4 | 4.75 | false |
+| refund-005 | bad | 1 | 1 | 1 | 1 | 1.00 | true |
+| refund-005 | mediocre | 4 | 3 | 5 | 2 | 3.50 | false |
+| refund-005 | good | 4 | 4 | 5 | 4 | 4.25 | false |
+
+The adversarial test now passes its ordering check: bad replies score clearly below mediocre replies, and mediocre replies score below good replies.
+
+Full eval v2 from `eval/results-v2.json`:
+
+| Email id | Category | Reference similarity | Rubric average | Hallucinated actions | Combined |
+| --- | --- | ---: | ---: | --- | ---: |
+| bill-005 | billing | 35.1 | 5.00 | no | 74.0 |
+| bill-010 | billing | 34.0 | 5.00 | no | 73.6 |
+| tech-005 | technical_issue | 6.2 | 4.00 | no | 50.5 |
+| tech-010 | technical_issue | 11.4 | 5.00 | no | 64.6 |
+| refund-005 | refund_policy | 7.8 | 4.50 | no | 57.1 |
+| refund-010 | refund_policy | 11.0 | 4.75 | no | 61.4 |
+| gen-005 | general_inquiry | 14.1 | 4.75 | no | 62.6 |
+| gen-010 | general_inquiry | 14.4 | 5.00 | no | 65.8 |
+| comp-005 | complaint | 20.4 | 5.00 | no | 68.2 |
+| comp-010 | complaint | 18.1 | 4.75 | no | 64.2 |
+
+Rubric distribution comparison from `npm run validate`:
+
+| Run | Count | Min | Max | Mean | Stddev |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| old results.json | 10 | 4.50 | 5.00 | 4.90 | 0.166 |
+| new results-v2.json | 10 | 4.00 | 5.00 | 4.78 | 0.305 |
+
+This is an improvement: the standard deviation increased from 0.166 to 0.305 and the minimum score dropped from 4.50 to 4.00. It is not a complete fix; the full eval still skews high. The adversarial test shows the judge can discriminate when quality differences are clear, while the held-out generated replies remain mostly strong or the judge is still somewhat lenient.
+
+Correlation update: before and after correlation are both unavailable right now because no `human_score` labels are filled in. After labeling at least two rows, `npm run validate` will compare human labels against the new combined score.
+
+With more time, I would calibrate the judge with real human-labeled examples, use a stronger or different model as the judge than the one generating replies to reduce self-preference bias, evaluate pairwise comparisons instead of only absolute scores, and track per-category calibration because support-quality failures vary by category.
 
 ## Setup
 
@@ -155,10 +228,18 @@ npm run eval
 This runs the full generation and evaluation pipeline on the 10 held-out test examples, prints per-email scores plus an overall mean combined score, and writes:
 
 ```bash
-eval/results.json
+eval/results-v2.json
 ```
 
-`eval/results.json` includes `human_score: null` for each item. Fill those values manually after reviewing the generated replies.
+`eval/results-v2.json` includes `human_score: null` for each item. Fill those values manually after reviewing the generated replies.
+
+## Run Judge Calibration Test
+
+```bash
+npm run test-judge
+```
+
+This runs three hard-coded bad/mediocre/good reply sets through the rubric judge and warns if the judge does not separate the quality levels.
 
 ## Validate Automated Scores
 
@@ -166,7 +247,7 @@ eval/results.json
 npm run validate
 ```
 
-This reads `eval/results.json`, requires at least two filled `human_score` values, computes Pearson correlation between human scores and automated combined scores, and prints an interpretation.
+This reads both `eval/results.json` and `eval/results-v2.json`, prints old-vs-new rubric score distributions, and computes Pearson correlation when at least two human labels are available.
 
 ## Important Files
 
@@ -179,6 +260,7 @@ This reads `eval/results.json`, requires at least two filled `human_score` value
 - `app/api/generate/route.ts`: app API route.
 - `eval/run-eval.ts`: held-out evaluation harness.
 - `eval/validate.ts`: human-label correlation check.
+- `eval/adversarial-test.ts`: bad/mediocre/good calibration test for the judge.
 
 ## Limitations and Next Steps
 

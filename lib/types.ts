@@ -31,6 +31,7 @@ export type EvaluationResult = {
   referenceSimilarityScore: number | null;
   rubric: Record<RubricDimension, RubricScore>;
   rubricAverage: number;
+  hallucinatedActions: boolean;
   combinedScore: number;
   weighting: string;
 };
