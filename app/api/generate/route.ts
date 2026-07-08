@@ -1,31 +1,30 @@
 import { NextResponse } from "next/server";
-import { generateAndScoreReplies } from "@/lib/replyRubric";
+import { evaluateReply } from "@/lib/evaluate";
+import { generateReply } from "@/lib/generate";
 
 export const runtime = "nodejs";
 
 export async function POST(request: Request) {
   try {
-    const body = (await request.json()) as {
-      customerEmail?: string;
-      contextNotes?: string;
-    };
+    const body = (await request.json()) as { incomingEmail?: string };
 
-    if (!body.customerEmail?.trim()) {
+    if (!body.incomingEmail?.trim()) {
       return NextResponse.json(
-        { error: "Customer email is required." },
+        { error: "Incoming email is required." },
         { status: 400 }
       );
     }
 
-    const result = await generateAndScoreReplies({
-      customerEmail: body.customerEmail,
-      contextNotes: body.contextNotes
+    const generation = await generateReply(body.incomingEmail);
+    const evaluation = await evaluateReply({
+      incomingEmail: body.incomingEmail,
+      generatedReply: generation.reply
     });
 
-    return NextResponse.json(result);
+    return NextResponse.json({ ...generation, evaluation });
   } catch (error) {
     const message =
-      error instanceof Error ? error.message : "Unable to generate replies.";
+      error instanceof Error ? error.message : "Unable to generate a reply.";
 
     return NextResponse.json({ error: message }, { status: 500 });
   }

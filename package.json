@@ -1,5 +1,5 @@
 {
-  "name": "reply-rubric",
+  "name": "grounded-reply",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "tsc --noEmit",
-    "eval": "tsx eval/run-eval.ts"
+    "eval": "tsx eval/run-eval.ts",
+    "validate": "tsx eval/validate.ts"
   },
   "dependencies": {
     "next": "^16.2.10",

@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Reply + Rubric",
-  description: "Generate customer replies and score their quality."
+  title: "GroundedReply",
+  description: "Generate grounded support replies with retrieval and evaluation."
 };
 
 export default function RootLayout({

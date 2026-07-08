@@ -1,0 +1,302 @@
+[
+  {
+    "id": "bill-001",
+    "category": "billing",
+    "incoming_email": "Hi, I was charged twice for my March subscription. One charge posted on March 3 and another on March 5. Can someone check this and remove the extra charge?",
+    "sent_reply": "Thanks for flagging this. I see how a duplicate charge would be frustrating. Please send the last four digits of the card and the billing email on the account, and we can verify both March transactions and refund any duplicate charge."
+  },
+  {
+    "id": "bill-002",
+    "category": "billing",
+    "incoming_email": "Can you update our invoice address to 88 Market Street, Suite 410, Denver, CO 80202? The old address is still showing on invoices.",
+    "sent_reply": "Absolutely. We can update the billing address to 88 Market Street, Suite 410, Denver, CO 80202 for future invoices. Previously issued invoices may keep the old address, but we can regenerate a copy if your finance team needs one."
+  },
+  {
+    "id": "bill-003",
+    "category": "billing",
+    "incoming_email": "Our card expired and the renewal failed. Will we lose access right away?",
+    "sent_reply": "You will not lose access immediately. Please update the payment method from Billing settings, and the system will retry the renewal. If payment is not resolved during the grace period, the workspace may be paused until billing is current."
+  },
+  {
+    "id": "bill-004",
+    "category": "billing",
+    "incoming_email": "Why did the price jump this month? We did not change plans.",
+    "sent_reply": "I can help check that. Price changes can happen when seat count changes, a discount expires, or usage passes an included limit. Please share the workspace name or invoice number so we can identify the exact line item."
+  },
+  {
+    "id": "bill-005",
+    "category": "billing",
+    "incoming_email": "Please send me a W-9 and all unpaid invoices for Northstar Labs.",
+    "sent_reply": "Sure. We can send the W-9 and unpaid invoices for Northstar Labs to an account billing admin. Please confirm the billing email address where you would like us to send them."
+  },
+  {
+    "id": "bill-006",
+    "category": "billing",
+    "incoming_email": "I need to switch from monthly to annual billing before our next renewal. Is that possible?",
+    "sent_reply": "Yes, you can switch from monthly to annual billing before the next renewal. We can help schedule the change so it starts on the renewal date and avoids overlap. Please confirm the workspace and preferred annual plan."
+  },
+  {
+    "id": "bill-007",
+    "category": "billing",
+    "incoming_email": "The invoice has the wrong tax ID. It should be DE99871322. Can you correct it?",
+    "sent_reply": "We can update the tax ID to DE99871322 for future invoices. For the existing invoice, please send the invoice number so our billing team can check whether it can be corrected and reissued."
+  },
+  {
+    "id": "bill-008",
+    "category": "billing",
+    "incoming_email": "We downgraded last week but still see the higher plan amount in the billing page. Is the downgrade broken?",
+    "sent_reply": "Downgrades normally take effect at the next renewal, so the current billing page may still show the existing plan until then. If you expected an immediate downgrade, send the workspace name and we can review the account history."
+  },
+  {
+    "id": "bill-009",
+    "category": "billing",
+    "incoming_email": "Can I add three seats now and pay only for the remaining part of the year?",
+    "sent_reply": "Yes. Additional seats can be prorated for the remaining time in the current billing term. Add the seats from workspace settings, or share the workspace name and number of seats and we can help prepare the update."
+  },
+  {
+    "id": "bill-010",
+    "category": "billing",
+    "incoming_email": "My accountant says the receipt for April is missing. I only see March and May in the portal.",
+    "sent_reply": "We can help locate the April receipt. Please share the account email or workspace name, and we will check whether the April receipt failed to generate or was sent to a different billing contact."
+  },
+  {
+    "id": "tech-001",
+    "category": "technical_issue",
+    "incoming_email": "The app keeps spinning after I click Export CSV. I tried twice in Chrome and it never downloads.",
+    "sent_reply": "Sorry about the export trouble. Please try clearing the browser cache or using an incognito window first. If the CSV still does not download, send the report name and approximate time of the attempt so we can check the export logs."
+  },
+  {
+    "id": "tech-002",
+    "category": "technical_issue",
+    "incoming_email": "Our Zendesk sync stopped yesterday afternoon. New tickets are not appearing in your dashboard.",
+    "sent_reply": "Thanks for the detail. Please reconnect the Zendesk integration from Settings > Integrations, then run a manual sync. If new tickets still do not appear, send the Zendesk subdomain and a sample ticket ID so we can investigate."
+  },
+  {
+    "id": "tech-003",
+    "category": "technical_issue",
+    "incoming_email": "I cannot reset my password because the reset email never arrives. Checked spam too.",
+    "sent_reply": "I’m sorry the reset email is not arriving. Please confirm the email address you are using to sign in. We can check whether the reset message bounced or whether the account uses single sign-on instead of password login."
+  },
+  {
+    "id": "tech-004",
+    "category": "technical_issue",
+    "incoming_email": "The mobile app crashes every time I open a conversation with an attachment.",
+    "sent_reply": "That sounds disruptive. Please update to the latest mobile app version and try again. If it still crashes, send your device model, operating system version, app version, and one affected conversation ID."
+  },
+  {
+    "id": "tech-005",
+    "category": "technical_issue",
+    "incoming_email": "We are getting a 403 error when calling the API endpoint to create a customer. It worked last week.",
+    "sent_reply": "A 403 usually means the token no longer has permission or the endpoint is being called from an unauthorized workspace. Please rotate the API token, confirm it has customer write access, and send the request ID if the error continues."
+  },
+  {
+    "id": "tech-006",
+    "category": "technical_issue",
+    "incoming_email": "Images in our email templates are broken for some recipients. They show up fine in preview.",
+    "sent_reply": "Preview can differ from recipient inbox behavior when images are blocked or hosted on a restricted domain. Please send one affected template, a recipient domain where images fail, and whether the images use public HTTPS URLs."
+  },
+  {
+    "id": "tech-007",
+    "category": "technical_issue",
+    "incoming_email": "The dashboard numbers look wrong. It says we answered zero conversations yesterday, but we definitely replied to customers.",
+    "sent_reply": "We can take a look. Dashboard metrics can lag after a large import or timezone change. Please share the workspace name, timezone, and an example conversation that should have counted yesterday."
+  },
+  {
+    "id": "tech-008",
+    "category": "technical_issue",
+    "incoming_email": "SSO login redirects me back to the login page with no error. My teammate can get in fine.",
+    "sent_reply": "Because your teammate can sign in, this may be specific to your user record or browser session. Please try a private window first, then send your login email and the approximate time of the failed redirect if it continues."
+  },
+  {
+    "id": "tech-009",
+    "category": "technical_issue",
+    "incoming_email": "Can you restore a deleted automation rule? I deleted it by accident this morning.",
+    "sent_reply": "We may be able to help if the deletion was recent. Please send the workspace name, the rule name if you remember it, and the approximate deletion time so our team can check whether it can be restored."
+  },
+  {
+    "id": "tech-010",
+    "category": "technical_issue",
+    "incoming_email": "Notifications are delayed by 20 or 30 minutes. This started after we added a new inbox.",
+    "sent_reply": "Delayed notifications can happen if inbox rules or routing queues are backed up. Please send the new inbox name, an example conversation, and whether the delay affects email, Slack, or in-app notifications."
+  },
+  {
+    "id": "refund-001",
+    "category": "refund_policy",
+    "incoming_email": "We bought the annual plan yesterday and realized it is the wrong fit. Can we get a refund?",
+    "sent_reply": "Yes. Annual purchases are refundable within 30 days of purchase. Please confirm the workspace name and billing email, and we can start the refund review."
+  },
+  {
+    "id": "refund-002",
+    "category": "refund_policy",
+    "incoming_email": "I forgot to cancel and got charged monthly this morning. I have not used the product in weeks.",
+    "sent_reply": "Monthly renewals can be refunded within 7 days of the charge if the workspace has not had meaningful usage after renewal. Please share the workspace name so we can review eligibility."
+  },
+  {
+    "id": "refund-003",
+    "category": "refund_policy",
+    "incoming_email": "We renewed annually 45 days ago. Can you make an exception and refund the renewal?",
+    "sent_reply": "I understand the request, but annual renewals are refundable only within 30 days of renewal. At 45 days, we cannot issue a refund, but we can turn off auto-renewal for the next term."
+  },
+  {
+    "id": "refund-004",
+    "category": "refund_policy",
+    "incoming_email": "We accidentally added 12 extra seats for two days. Can you credit the mistake?",
+    "sent_reply": "We can review accidental seat additions for a prorated credit when they are corrected quickly. Please remove any seats you do not need and send the workspace name, number of seats, and dates they were active."
+  },
+  {
+    "id": "refund-005",
+    "category": "refund_policy",
+    "incoming_email": "The product was down for us for half a day. Are we eligible for a refund or credit?",
+    "sent_reply": "Service credits are reviewed based on the incident impact and the plan terms. Please send the workspace name, affected timeframe, and examples of failed actions so we can evaluate whether a credit applies."
+  },
+  {
+    "id": "refund-006",
+    "category": "refund_policy",
+    "incoming_email": "I canceled five minutes after signing up for a trial, but my card was charged. Please reverse it.",
+    "sent_reply": "We can help review the charge. Please share the account email and charge date. If the charge was made in error during the trial, we can reverse it after confirming the account details."
+  },
+  {
+    "id": "refund-007",
+    "category": "refund_policy",
+    "incoming_email": "Can you refund only one team member's seat? She left the company last month.",
+    "sent_reply": "Unused seats can usually be removed going forward, but partial refunds depend on the billing term and timing. Please remove the departed user and send the workspace name so we can check whether a prorated credit is available."
+  },
+  {
+    "id": "refund-008",
+    "category": "refund_policy",
+    "incoming_email": "We are a nonprofit and missed the cancellation deadline. Can you refund the invoice as a courtesy?",
+    "sent_reply": "Thanks for explaining. Courtesy refunds still need to follow the refund window for the plan. Please send the invoice number and renewal date, and we can review whether any eligible option is available."
+  },
+  {
+    "id": "refund-009",
+    "category": "refund_policy",
+    "incoming_email": "I paid by bank transfer for Enterprise setup, but procurement rejected the project. Is the setup fee refundable?",
+    "sent_reply": "Enterprise setup fees are generally non-refundable once onboarding work has started. Please share the contract or invoice number so we can confirm whether any setup work has begun."
+  },
+  {
+    "id": "refund-010",
+    "category": "refund_policy",
+    "incoming_email": "I was charged after downgrading. The lower plan should have started yesterday.",
+    "sent_reply": "We can review that billing transition. Please send the workspace name and downgrade confirmation date. If the higher charge was applied after the lower plan should have started, we can correct the invoice or issue an eligible credit."
+  },
+  {
+    "id": "gen-001",
+    "category": "general_inquiry",
+    "incoming_email": "Do you support shared inboxes for sales and support teams in the same workspace?",
+    "sent_reply": "Yes. You can create separate shared inboxes for sales, support, or other teams within the same workspace, then manage members and routing rules for each inbox."
+  },
+  {
+    "id": "gen-002",
+    "category": "general_inquiry",
+    "incoming_email": "How do I invite a teammate who should only see one inbox?",
+    "sent_reply": "Invite the teammate from workspace settings, then add them only to the specific inbox they should access. Their visibility will be limited to inboxes where they are a member."
+  },
+  {
+    "id": "gen-003",
+    "category": "general_inquiry",
+    "incoming_email": "Can I export our conversation history before we decide whether to renew?",
+    "sent_reply": "Yes. Admins can export conversation history from the reporting or data export area, depending on plan permissions. If you do not see the export option, send your workspace name and we can check access."
+  },
+  {
+    "id": "gen-004",
+    "category": "general_inquiry",
+    "incoming_email": "Do you offer onboarding help for a team of 30 agents?",
+    "sent_reply": "Yes. Onboarding help is available for larger teams, and admin training can be scheduled as a paid add-on. Share your timeline and workspace name, and we can connect you with the right team."
+  },
+  {
+    "id": "gen-005",
+    "category": "general_inquiry",
+    "incoming_email": "Where can I change the company logo that appears in customer emails?",
+    "sent_reply": "Admins can update the company logo from branding or email template settings. After saving the new logo, send a test email to confirm it renders correctly for customers."
+  },
+  {
+    "id": "gen-006",
+    "category": "general_inquiry",
+    "incoming_email": "Is there a way to route VIP customer emails to a specific person?",
+    "sent_reply": "Yes. You can use routing rules or automation to identify VIP customers and assign those conversations to a specific teammate or team. The exact setup depends on how VIP customers are tagged."
+  },
+  {
+    "id": "gen-007",
+    "category": "general_inquiry",
+    "incoming_email": "Can we import old Gmail conversations when moving over?",
+    "sent_reply": "Historical import may be available through CSV or migration support depending on the plan and source data. Please share the approximate number of conversations and your current system."
+  },
+  {
+    "id": "gen-008",
+    "category": "general_inquiry",
+    "incoming_email": "Does your product work for teams in multiple time zones?",
+    "sent_reply": "Yes. Teams can work across multiple time zones by setting workspace hours, teammate availability, and reporting filters. If you have a specific workflow, we can recommend a setup."
+  },
+  {
+    "id": "gen-009",
+    "category": "general_inquiry",
+    "incoming_email": "Can I use canned responses and still personalize each reply?",
+    "sent_reply": "Yes. Saved replies can be inserted into a conversation and edited before sending, so agents can keep common answers consistent while still personalizing the final message."
+  },
+  {
+    "id": "gen-010",
+    "category": "general_inquiry",
+    "incoming_email": "Do you have an audit log that shows who changed inbox settings?",
+    "sent_reply": "Audit logs are available on higher-tier plans. Please share your workspace name and plan, and we can confirm whether inbox-setting changes are included for your account."
+  },
+  {
+    "id": "comp-001",
+    "category": "complaint",
+    "incoming_email": "I am really disappointed. Your support promised a callback yesterday and nobody contacted me.",
+    "sent_reply": "I’m sorry we missed the promised callback. That is not the experience we want to provide. Please send the ticket number or account email, and we will review what happened and make sure the right team follows up."
+  },
+  {
+    "id": "comp-002",
+    "category": "complaint",
+    "incoming_email": "Your latest update made the inbox slower. My agents are complaining all day and we are losing time.",
+    "sent_reply": "I’m sorry the update has slowed down your team. Please send the workspace name, browser, and one or two examples of slow actions so we can investigate performance and share practical next steps."
+  },
+  {
+    "id": "comp-003",
+    "category": "complaint",
+    "incoming_email": "We were told migration would be easy. It has been a mess and nobody owns the problem.",
+    "sent_reply": "I’m sorry the migration has felt disorganized. Please send the migration project name or workspace, and we will review the open issues, identify an owner, and clarify the next steps with you."
+  },
+  {
+    "id": "comp-004",
+    "category": "complaint",
+    "incoming_email": "I keep getting bounced between billing and support. I just need someone to fix my invoice.",
+    "sent_reply": "I’m sorry you have been passed around. Please send the invoice number and the correction needed, and we will route it to the billing team with the context already attached."
+  },
+  {
+    "id": "comp-005",
+    "category": "complaint",
+    "incoming_email": "This tool is unusable if notifications are unreliable. We missed two urgent customer emails.",
+    "sent_reply": "I’m sorry missed notifications affected urgent customer emails. Please send the workspace name, notification channel, and examples of the missed messages so we can investigate the delay or delivery failure."
+  },
+  {
+    "id": "comp-006",
+    "category": "complaint",
+    "incoming_email": "I have asked three times to cancel, and you still charged us. This is unacceptable.",
+    "sent_reply": "I’m sorry this has taken multiple requests. Please send the cancellation request dates and the latest invoice number, and we will review whether the charge should be reversed and ensure auto-renewal is turned off if requested."
+  },
+  {
+    "id": "comp-007",
+    "category": "complaint",
+    "incoming_email": "Your sales team said the integration was included, but now support says it costs extra.",
+    "sent_reply": "I understand why that is frustrating. Please share the integration name and any sales notes or quote you received, and we will compare that with your current plan details before advising on next steps."
+  },
+  {
+    "id": "comp-008",
+    "category": "complaint",
+    "incoming_email": "The help article is wrong. I followed it exactly and the option it mentions does not exist.",
+    "sent_reply": "Thanks for calling that out, and I’m sorry the article sent you in the wrong direction. Please send the article link and a screenshot of your settings page so we can verify the gap and update the documentation."
+  },
+  {
+    "id": "comp-009",
+    "category": "complaint",
+    "incoming_email": "We are considering switching vendors because every release breaks something else.",
+    "sent_reply": "I’m sorry repeated release issues have shaken your confidence. If you can share the workspace name and the most recent problems, we can review the pattern, prioritize open fixes, and connect you with the right owner."
+  },
+  {
+    "id": "comp-010",
+    "category": "complaint",
+    "incoming_email": "I waited on chat for 40 minutes and then the agent disconnected without answering.",
+    "sent_reply": "I’m sorry the chat ended without an answer after such a long wait. Please send the chat timestamp or account email, and we will review the transcript and follow up with the information you needed."
+  }
+]

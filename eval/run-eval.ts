@@ -1,47 +1,52 @@
 import { writeFile } from "node:fs/promises";
 import path from "node:path";
-import samples from "./sample-emails.json";
-import { generateAndScoreReplies } from "../lib/replyRubric";
-
-type SampleEmail = {
-  id: string;
-  customerEmail: string;
-  contextNotes: string;
-};
-
-type EvalResult = SampleEmail & Awaited<ReturnType<typeof generateAndScoreReplies>>;
+import { splitDataset } from "../lib/dataset";
+import { evaluateReply } from "../lib/evaluate";
+import { generateReply } from "../lib/generate";
 
 async function main() {
-  const results: EvalResult[] = [];
+  const { testSet } = splitDataset();
+  const results = [];
 
-  for (const sample of samples as SampleEmail[]) {
-    process.stdout.write(`Evaluating ${sample.id}...\n`);
-    const result = await generateAndScoreReplies({
-      customerEmail: sample.customerEmail,
-      contextNotes: sample.contextNotes
+  for (const item of testSet) {
+    process.stdout.write(`Evaluating ${item.id}...\n`);
+    const generation = await generateReply(item.incoming_email);
+    const evaluation = await evaluateReply({
+      incomingEmail: item.incoming_email,
+      generatedReply: generation.reply,
+      realSentReply: item.sent_reply
     });
 
-    results.push({ ...sample, ...result });
+    results.push({
+      id: item.id,
+      category: item.category,
+      incoming_email: item.incoming_email,
+      real_sent_reply: item.sent_reply,
+      generated_reply: generation.reply,
+      retrieved_example_ids: generation.retrievedExamples.map((example) => example.id),
+      evaluation,
+      human_score: null
+    });
   }
 
-  const rows = results.map((result) => {
-    const best = result.candidates[0];
-
-    return {
-      id: result.id,
-      bestStrategy: best.strategy,
-      bestOverallScore: best.overallScore.toFixed(1),
-      hallucinationFlags: result.candidates.some((candidate) => candidate.hallucination)
-        ? "yes"
-        : "no"
-    };
-  });
+  const rows = results.map((result) => ({
+    id: result.id,
+    category: result.category,
+    similarity: result.evaluation.semanticSimilarityScore?.toFixed(1) ?? "n/a",
+    rubricAverage: result.evaluation.rubricAverage.toFixed(2),
+    combined: result.evaluation.combinedScore.toFixed(1)
+  }));
+  const meanCombined =
+    results.reduce((sum, result) => sum + result.evaluation.combinedScore, 0) /
+    results.length;
 
   console.table(rows);
+  console.log(`Overall system score: ${meanCombined.toFixed(1)}`);
 
   const outputPath = path.join(process.cwd(), "eval", "results.json");
   await writeFile(outputPath, JSON.stringify(results, null, 2));
-  process.stdout.write(`Saved full results to ${outputPath}\n`);
+  console.log(`Saved full results to ${outputPath}`);
+  console.log("Fill human_score values in eval/results.json, then run npm run validate.");
 }
 
 main().catch((error) => {
