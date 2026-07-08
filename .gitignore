@@ -5,4 +5,5 @@ dist
 .env
 .env*.local
 eval/results.json
+tsconfig.tsbuildinfo
 npm-debug.log*
