@@ -1,10 +1,9 @@
-const chatModel = process.env.GROQ_MODEL || "llama-3.3-70b-versatile";
-
 export async function createChatCompletion(
   messages: Array<{ role: "system" | "user" | "assistant"; content: string }>,
   options: { temperature?: number } = {}
 ) {
   const apiKey = getApiKey();
+  const chatModel = process.env.GROQ_MODEL || "llama-3.3-70b-versatile";
   const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
     method: "POST",
     headers: {

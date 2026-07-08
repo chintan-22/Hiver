@@ -1,8 +1,11 @@
 import { writeFile } from "node:fs/promises";
 import path from "node:path";
+import { loadEnvConfig } from "@next/env";
 import { splitDataset } from "../lib/dataset";
 import { evaluateReply } from "../lib/evaluate";
 import { generateReply } from "../lib/generate";
+
+loadEnvConfig(process.cwd());
 
 async function main() {
   const { testSet } = splitDataset();
